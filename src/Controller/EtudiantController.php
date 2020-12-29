@@ -48,4 +48,30 @@ class EtudiantController extends AbstractController
      return $this->render('etudiant/consulter.html.twig', [
           'etudiant' => $etudiant,]);
     }
+
+
+    public function consulterEtudiant($idEtudiant){
+
+    		$etudiant = $this->getDoctrine()
+            ->getRepository(Etudiant::class)
+            ->find($idEtudiant);
+
+    		if (!$etudiant) {
+    			throw $this->createNotFoundException(
+                'Aucun etudiant trouvé avec le numéro '.$idEtudiant
+    			);
+    		}
+
+    		//return new Response('Etudiant : '.$etudiant->getNom());
+    		return $this->render('etudiant/consulter.html.twig', [
+                'etudiant' => $etudiant,]);
+    	}
+
+
+
+
+
+
+
+
 }

@@ -7,3 +7,6 @@ index:
 etudiantAjouter:
     path: /etudiant/ajouter
     controller: App\Controller\EtudiantController::ajouterEtudiant
+etudiantConsulter:
+    path: /etudiant/consulter/{idEtudiant}
+    controller: App\Controller\EtudiantController::consulterEtudiant

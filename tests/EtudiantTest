@@ -1,0 +1,18 @@
+<?php
+
+namespace App\tests;
+
+
+use App\Entity\Etudiant;
+use PHPUnit\Framework\TestCase;
+
+class EtudiantTest extends TestCase
+{
+    public function testAdd()
+    {
+        $etudiant = new Etudiant();
+        $result = $etudiant->add(30, 12);
+
+        // assert that your calculator added the numbers correctly!
+        $this->assertEquals(42, $result);
+    }

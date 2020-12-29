@@ -89,4 +89,16 @@ class Etudiant
 
         return $this;
     }
+
+
+          public function add($a, $b)
+              {
+                  return $a + $b;
+              }
+
+
+
+
+
+
 }
