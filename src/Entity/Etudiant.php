@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EtudiantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,9 +35,34 @@ class Etudiant
     private $dateNaiss;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Section::class, inversedBy="etudiants")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $section;
+    private $cheminImg;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Maison::class, inversedBy="etudiants")
+     */
+    private $maison;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Statut::class, inversedBy="etudiants")
+     */
+    private $statut;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Activite::class, mappedBy="etudiant", orphanRemoval=true)
+     */
+    private $activites;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Patronus::class, inversedBy="etudiants")
+     */
+    private $patronus;
+
+    public function __construct()
+    {
+        $this->activites = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -78,27 +105,84 @@ class Etudiant
         return $this;
     }
 
-    public function getSection(): ?Section
-    {
-        return $this->section;
-    }
 
-    public function setSection(?Section $section): self
-    {
-        $this->section = $section;
+          public function getCheminImg(): ?string
+          {
+              return $this->cheminImg;
+          }
 
-        return $this;
-    }
+          public function setCheminImg(?string $cheminImg): self
+          {
+              $this->cheminImg = $cheminImg;
 
+              return $this;
+          }
 
-          public function add($a, $b)
-              {
-                  return $a + $b;
+          public function getMaison(): ?Maison
+          {
+              return $this->maison;
+          }
+
+          public function setMaison(?Maison $maison): self
+          {
+              $this->maison = $maison;
+
+              return $this;
+          }
+
+          public function getStatut(): ?Statut
+          {
+              return $this->statut;
+          }
+
+          public function setStatut(?Statut $statut): self
+          {
+              $this->statut = $statut;
+
+              return $this;
+          }
+
+          /**
+           * @return Collection|Activite[]
+           */
+          public function getActivites(): Collection
+          {
+              return $this->activites;
+          }
+
+          public function addActivite(Activite $activite): self
+          {
+              if (!$this->activites->contains($activite)) {
+                  $this->activites[] = $activite;
+                  $activite->setEtudiant($this);
               }
 
+              return $this;
+          }
 
+          public function removeActivite(Activite $activite): self
+          {
+              if ($this->activites->removeElement($activite)) {
+                  // set the owning side to null (unless already changed)
+                  if ($activite->getEtudiant() === $this) {
+                      $activite->setEtudiant(null);
+                  }
+              }
 
+              return $this;
+          }
 
+          public function getPatronus(): ?Patronus
+          {
+              return $this->patronus;
+          }
+
+          public function setPatronus(?Patronus $patronus): self
+          {
+              $this->patronus = $patronus;
+
+              return $this;
+          }
 
 
 }

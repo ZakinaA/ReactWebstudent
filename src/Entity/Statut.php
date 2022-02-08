@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\SectionRepository;
+use App\Repository\StatutRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SectionRepository::class)
+ * @ORM\Entity(repositoryClass=StatutRepository::class)
  */
-class Section
+class Statut
 {
     /**
      * @ORM\Id
@@ -20,17 +20,17 @@ class Section
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", length=30)
      */
-    private $code;
+    private $nom;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $libelle;
+    private $descriptif;
 
     /**
-     * @ORM\OneToMany(targetEntity=Etudiant::class, mappedBy="section")
+     * @ORM\OneToMany(targetEntity=Etudiant::class, mappedBy="statut")
      */
     private $etudiants;
 
@@ -44,26 +44,26 @@ class Section
         return $this->id;
     }
 
-    public function getCode(): ?string
+    public function getNom(): ?string
     {
-        return $this->code;
+        return $this->nom;
     }
 
-    public function setCode(string $code): self
+    public function setNom(string $nom): self
     {
-        $this->code = $code;
+        $this->nom = $nom;
 
         return $this;
     }
 
-    public function getLibelle(): ?string
+    public function getDescriptif(): ?string
     {
-        return $this->libelle;
+        return $this->descriptif;
     }
 
-    public function setLibelle(string $libelle): self
+    public function setDescriptif(?string $descriptif): self
     {
-        $this->libelle = $libelle;
+        $this->descriptif = $descriptif;
 
         return $this;
     }
@@ -80,7 +80,7 @@ class Section
     {
         if (!$this->etudiants->contains($etudiant)) {
             $this->etudiants[] = $etudiant;
-            $etudiant->setSection($this);
+            $etudiant->setStatut($this);
         }
 
         return $this;
@@ -90,8 +90,8 @@ class Section
     {
         if ($this->etudiants->removeElement($etudiant)) {
             // set the owning side to null (unless already changed)
-            if ($etudiant->getSection() === $this) {
-                $etudiant->setSection(null);
+            if ($etudiant->getStatut() === $this) {
+                $etudiant->setStatut(null);
             }
         }
 

@@ -7,8 +7,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Etudiant;
 
+use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 class EtudiantController extends AbstractController
 {
+    
+    public static function getSubscribedServices() {
+        return array_merge(parent::getSubscribedServices(), [ 'jms_serializer' => '?'.SerializerInterface::class, ]);
+      }
+    
+    
+    
     /**
      * @Route("/etudiant", name="etudiant")
      */
@@ -69,9 +82,19 @@ class EtudiantController extends AbstractController
 
 
 
+        public function listerEtudiants(){
+
+    		$lesEtudiants = $this->getDoctrine()
+            ->getRepository(Etudiant::class)
+            ->findAll();
+            var_dump($lesEtudiants);
+    		return new Response('les etudiants');
+
+   
+    	}
 
 
-
+       
 
 
 }
